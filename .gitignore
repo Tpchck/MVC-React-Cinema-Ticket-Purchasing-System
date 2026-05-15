@@ -1,0 +1,74 @@
+# =============================================
+# CinemaTAPS — ASP.NET MVC + React
+# .gitignore
+# =============================================
+
+# -------  LOCAL DOCS (never commit) ---------
+MD/
+# Reference / prototype (not part of deliverable)
+old_version/
+
+# ------- ASP.NET Core / .NET ----------------
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+publish/
+*.nupkg
+*.snupkg
+**/[Pp]ackages/
+*.log
+launchSettings.json
+
+# ------- Secrets / config -------------------
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json
+*.pfx
+*.p12
+secrets.json
+
+# ------- Node / React -----------------------
+node_modules/
+dist/
+build/
+.next/
+.cache/
+.parcel-cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp/
+.pnp.js
+
+# ------- Vite / Webpack ---------------------
+*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ------- OS / editor ------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+*.swo
+*~
