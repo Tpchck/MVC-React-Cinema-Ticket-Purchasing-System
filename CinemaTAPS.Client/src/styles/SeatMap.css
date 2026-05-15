@@ -1,0 +1,89 @@
+.seatmap-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.seatmap-legend {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-item .seat {
+  width: 30px;
+  height: 30px;
+}
+
+.seatmap-grid {
+  display: grid;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.seat {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.seat.free {
+  background-color: #28a745;
+  color: white;
+  border-color: #1e7e34;
+}
+
+.seat.free:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+}
+
+.seat.your-seat {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+.seat.your-seat:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.seat.occupied {
+  background-color: #6c757d;
+  color: white;
+  border-color: #5a6268;
+  cursor: not-allowed;
+}
+
+.seat.occupied:hover {
+  background-color: #6c757d;
+}
+
+.seat.selected {
+  background-color: #ffc107;
+  color: black;
+  border-color: #ff9800;
+  transform: scale(1.15);
+}
+
+.seat:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

@@ -8,6 +8,11 @@ MD/
 # Reference / prototype (not part of deliverable)
 old_version/
 
+# ------- Root-level npm junk (npm run accidentally in root) ---
+/package.json
+/package-lock.json
+/yarn.lock
+
 # ------- ASP.NET Core / .NET ----------------
 *.user
 *.suo
@@ -35,6 +40,8 @@ publish/
 launchSettings.json
 
 # ------- Secrets / config -------------------
+# appsettings.json is kept (contains safe template only — no real secrets)
+# Real secrets live in appsettings.Development.json which is gitignored:
 appsettings.Development.json
 appsettings.*.json
 !appsettings.json
@@ -63,6 +70,15 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# ------- Vite compiled artifacts (generated from .ts source) ---
+vite.config.js
+vite.config.d.ts
+tsconfig.tsbuildinfo
+tsconfig.node.tsbuildinfo
+
+# ------- IDE / build cache -------------------
+*.lscache
 
 # ------- OS / editor ------------------------
 .DS_Store
