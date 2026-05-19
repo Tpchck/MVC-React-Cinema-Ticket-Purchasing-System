@@ -41,27 +41,4 @@ public class UserService : IUserService
             return (false, "Database error occurred while updating the profile.");
         }
     }
-
-    public async Task<(bool Success, string ErrorMessage)> DeleteUserAsync(int userId)
-    {
-        var user = await _context.Users.FindAsync(userId);
-        if (user == null)
-            return (false, "Not Found");
-        
-        _context.Users.Remove(user);
-        
-        try
-        {
-            await _context.SaveChangesAsync();
-            return (true, string.Empty);
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            return (false, "Concurrency Conflict: The user was already deleted or modified by another process.");
-        }
-        catch (DbUpdateException)
-        {
-            return (false, "Database error occurred while deleting the user.");
-        }
-    }
 }

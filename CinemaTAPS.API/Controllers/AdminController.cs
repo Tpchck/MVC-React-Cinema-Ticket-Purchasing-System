@@ -109,6 +109,7 @@ public class AdminController : ControllerBase
 
         var user = await _context.Users
             .Include(u => u.Reservations)
+            .ThenInclude(r => r.Screening)
             .FirstOrDefaultAsync(u => u.Id == id);
 
         var dto = new UserProfileDto
