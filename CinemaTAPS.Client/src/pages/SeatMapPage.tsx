@@ -62,8 +62,6 @@ export const SeatMapPage = () => {
       return;
     }
 
-    setError('');
-    setSuccess('');
     setIsBooking(true);
 
     try {

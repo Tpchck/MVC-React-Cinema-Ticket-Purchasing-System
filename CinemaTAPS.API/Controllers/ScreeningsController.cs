@@ -29,6 +29,22 @@ public class ScreeningsController : ControllerBase
         return Ok(screenings);
     }
 
+    [HttpGet("cinemas")]
+    public async Task<IActionResult> GetCinemas()
+    {
+        var cinemas = await _context.Cinemas
+            .Select(c => new CinemaDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Rows = c.Rows,
+                SeatsPerRow = c.SeatsPerRow
+            })
+            .ToListAsync();
+
+        return Ok(cinemas);
+    }
+
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateScreeningRequest request)

@@ -9,6 +9,13 @@ interface Screening {
   cinema: { name: string };
 }
 
+interface Cinema {
+  id: number;
+  name: string;
+  rows: number;
+  seatsPerRow: number;
+}
+
 interface User {
   id: number;
   firstName: string;
@@ -21,20 +28,29 @@ interface User {
 
 export const AdminDashboardPage = () => {
   const [screenings, setScreenings] = useState<Screening[]>([]);
+  const [cinemas, setCinemas] = useState<Cinema[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [editFormData, setEditFormData] = useState({ firstName: '', lastName: '', phoneNumber: '' });
 
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newScreening, setNewScreening] = useState({ movieTitle: '', cinemaId: 0, startTime: '' });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [screeningsData, usersData] = await Promise.all([
+        const [screeningsData, usersData, cinemasData] = await Promise.all([
           apiClient.get<Screening[]>('/screenings'),
           apiClient.get<User[]>('/admin/users'),
+          apiClient.get<Cinema[]>('/screenings/cinemas'),
         ]);
         setScreenings(screeningsData);
         setUsers(usersData);
+        setCinemas(cinemasData);
+        if (cinemasData.length > 0) {
+          setNewScreening(prev => ({ ...prev, cinemaId: cinemasData[0].id }));
+        }
       } catch (err: any) {
         toast.error(err.message || 'Failed to load data.');
       } finally {
@@ -45,8 +61,28 @@ export const AdminDashboardPage = () => {
     fetchData();
   }, []);
 
+  const handleCreateScreening = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newScreening.movieTitle.trim()) {
+      toast.error('Movie title is required.');
+      return;
+    }
+    try {
+      const created = await apiClient.post<Screening>('/screenings', {
+        movieTitle: newScreening.movieTitle,
+        cinemaId: newScreening.cinemaId,
+        startTime: new Date(newScreening.startTime).toISOString(),
+      });
+      setScreenings([...screenings, created]);
+      setNewScreening({ movieTitle: '', cinemaId: cinemas[0]?.id || 0, startTime: '' });
+      setShowCreateForm(false);
+      toast.success('Screening created.');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to create screening.');
+    }
+  };
+
   const handleDeleteScreening = async (id: number) => {
-    if (!window.confirm('Delete this screening?')) return;
     try {
       await apiClient.delete(`/screenings/${id}`);
       setScreenings(screenings.filter(s => s.id !== id));
@@ -93,8 +129,64 @@ export const AdminDashboardPage = () => {
     <div className="container mt-5">
       <h1>Admin Dashboard</h1>
 
-      <h3 className="mt-5">Screenings</h3>
-      <div className="table-responsive">
+      <div className="d-flex justify-content-between align-items-center mt-5">
+        <h3 className="mb-0">Screenings</h3>
+        <button
+          className="btn btn-success btn-sm"
+          onClick={() => setShowCreateForm(!showCreateForm)}
+        >
+          {showCreateForm ? 'Cancel' : 'Create Screening'}
+        </button>
+      </div>
+
+      {showCreateForm && (
+        <div className="card mt-3">
+          <div className="card-body">
+            <h5 className="card-title">New Screening</h5>
+            <form onSubmit={handleCreateScreening}>
+              <div className="row g-3">
+                <div className="col-md-4">
+                  <label className="form-label">Movie Title</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={newScreening.movieTitle}
+                    onChange={(e) => setNewScreening({ ...newScreening, movieTitle: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label">Cinema</label>
+                  <select
+                    className="form-select"
+                    value={newScreening.cinemaId}
+                    onChange={(e) => setNewScreening({ ...newScreening, cinemaId: parseInt(e.target.value) })}
+                  >
+                    {cinemas.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} ({c.rows}x{c.seatsPerRow})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label">Start Time</label>
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    value={newScreening.startTime}
+                    onChange={(e) => setNewScreening({ ...newScreening, startTime: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+              <button type="submit" className="btn btn-primary mt-3">Create</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <div className="table-responsive mt-3">
         <table className="table table-striped">
           <thead>
             <tr>

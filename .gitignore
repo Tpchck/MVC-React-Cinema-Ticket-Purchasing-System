@@ -38,6 +38,7 @@ publish/
 **/[Pp]ackages/
 *.log
 launchSettings.json
+wwwroot/
 
 # ------- Secrets / config -------------------
 # appsettings.json is kept (contains safe template only — no real secrets)
