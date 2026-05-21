@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
             LastName = request.LastName,
             PhoneNumber = request.PhoneNumber,
             Email = request.Email,
-            PasswordHash = request.Password, // No hashing in lab project
+            PasswordHash = request.Password,
             Role = "User",
             ConcurrencyToken = Guid.NewGuid()
         };

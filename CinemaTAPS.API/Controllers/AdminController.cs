@@ -85,7 +85,7 @@ public class AdminController : ControllerBase
     [HttpPut("users/{id}")]
     public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
     {
-        // Read the current admin's ID from the JWT token
+        // Reading current admin's ID from the JWT token
         var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!int.TryParse(adminIdClaim, out var currentAdminId))
             return Unauthorized(new { message = "Invalid token." });

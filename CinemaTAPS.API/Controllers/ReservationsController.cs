@@ -92,11 +92,10 @@ public class ReservationsController : ControllerBase
         if (screening == null)
             return NotFound(new { message = "Screening not found." });
 
-        // Check if seat is already reserved
         var existingReservation = await _context.Reservations
             .FirstOrDefaultAsync(r => r.ScreeningId == request.ScreeningId 
                 && r.RowPosition == request.RowPosition 
-                && r.SeatPosition == request.SeatPosition);
+                && r.SeatPosition == request.SeatPosition); //if seat is already reserved
 
         if (existingReservation != null)
             return Conflict(new { message = "Seat is already reserved." });
@@ -117,8 +116,7 @@ public class ReservationsController : ControllerBase
         }
         catch (DbUpdateException ex)
         {
-            // Concurrency conflict - seat was taken by another user
-            if (ex.InnerException?.Message.Contains("unique") == true)
+            if (ex.InnerException?.Message.Contains("unique") == true) //seat should not be taken by other client
                 return Conflict(new { message = "Seat is no longer available." });
             throw;
         }

@@ -13,8 +13,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { isAuthenticated, isAdmin, isInitialized } = useAuthStore();
 
-  // Wait for auth check to complete before redirecting
-  if (!isInitialized) {
+  if (!isInitialized) {//hook
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
         <div className="spinner-border text-secondary" role="status">

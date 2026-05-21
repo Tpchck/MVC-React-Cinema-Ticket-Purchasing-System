@@ -15,7 +15,7 @@ export interface AuthStore {
   token: string | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  isInitialized: boolean; // true once /auth/me check has completed
+  isInitialized: boolean; //true: /auth/me check completed
 
   setAuth: (user: User, token: string) => void;
   setUser: (user: User) => void;

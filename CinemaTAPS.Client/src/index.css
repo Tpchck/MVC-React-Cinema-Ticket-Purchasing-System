@@ -10,7 +10,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background-color: #ffffff;
@@ -23,7 +24,6 @@ html, body {
   background-color: #ffffff;
 }
 
-/* Push footer to the bottom */
-#root > *:not(nav):not(footer) {
+#root>*:not(nav):not(footer) {
   flex: 1;
 }

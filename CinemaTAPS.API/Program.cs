@@ -7,14 +7,12 @@ using CinemaTAPS.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
-// Add JWT authentication — key read from appsettings.json / appsettings.Development.json
 var jwtKey = builder.Configuration["Jwt:SecretKey"]
     ?? throw new InvalidOperationException("Jwt:SecretKey is not configured in appsettings.");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "CinemaTAPS";
@@ -41,17 +39,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Add controllers and JSON options
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
-// Add OpenAPI
 builder.Services.AddOpenApi();
-
-// CORS — allow React dev server in development
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -61,8 +55,6 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -71,13 +63,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Serve static files from wwwroot (React build output)
 app.UseStaticFiles();
-
 app.MapControllers();
-
-// Fallback to index.html for React SPA routing
 app.MapFallbackToFile("index.html");
-
 app.Run();
