@@ -16,7 +16,7 @@ Covers user management, session scheduling, seat reservation, and concurrency ha
 
 - User registration and profile editing
 - Admin panel: create and delete screenings
-- Seat map with real-time occupancy display
+- Seat map showing free and taken seats
 - Seat booking and cancellation
 - Concurrency conflict handling (optimistic locking on user edits, unique index on seat reservations)
 - Two run modes: development (two servers) and production (single server)
@@ -58,7 +58,7 @@ dotnet ef database update
 ```bash
 # Terminal 1 — API
 cd CinemaTAPS.API
-dotnet run
+dotnet run --urls http://localhost:5183
 
 # Terminal 2 — React dev server
 cd CinemaTAPS.Client
@@ -77,7 +77,7 @@ cd CinemaTAPS.Client
 npm run build
 
 cd ../CinemaTAPS.API
-dotnet run
+dotnet run --urls http://localhost:5183
 ```
 
 Open `http://localhost:5183`
@@ -86,7 +86,7 @@ Open `http://localhost:5183`
 
 ## Default Admin Account
 
-Can be hardcoded manualy.
+The initial migration seeds one admin user, defined in `CinemaTAPS.API/Data/ApplicationDbContext.cs`.
 
 ---
 
